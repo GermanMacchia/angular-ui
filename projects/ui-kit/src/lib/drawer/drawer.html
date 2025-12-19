@@ -1,0 +1,184 @@
+<!--HEADER-->
+<div class="drawer-content bg-base-200">
+  <div class="flex items-center justify-between" [class]="!open() ? 'h-16' : ''">
+    @if (!open()) {
+    <div class="flex w-full items-center justify-between">
+      <div class="flex items-center gap-6">
+        <button
+          type="button"
+          class="btn btn-circle m-1 border-none bg-transparent"
+          (click)="toggleDrawer()"
+          data-testid="drawer-toggle"
+        >
+          <i class="bi bi-layout-sidebar-inset"></i>
+        </button>
+        <!--DATOS USUARIO-->
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <i class="bi bi-person-bounding-box"></i>
+            <p class="max-w-[10rem] text-sm">{{ usuario() | titlecase }}</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <i class="bi bi-shield-lock text-gray-500"></i>
+            <p class="text-sm text-gray-500">{{ rol() | titlecase }}</p>
+          </div>
+        </div>
+        <div class="divider divider-horizontal"></div>
+        <!--BREADCRUMBS-->
+        <div class="breadcrumbs text-sm">
+          <ul>
+            @for (item of paths(); track $index) {
+            <li
+              class="cursor-pointer hover:underline-offset-4"
+              (click)="router.navigate([item.url])"
+            >
+              <p>{{ item.label | titlecase }}</p>
+            </li>
+            }
+          </ul>
+        </div>
+      </div>
+      <button
+        [disabled]="paths().length <= 1"
+        type="button"
+        class="btn mx-2 rounded-lg"
+        (click)="back()"
+        data-testid="header-back-button"
+        aria-label="Logout"
+      >
+        <i class="bi bi-arrow-left-square text-xl"></i>
+        Volver
+      </button>
+    </div>
+    }
+  </div>
+</div>
+<!--END HEADER-->
+
+<!--SIDEBAR-->
+<div class="drawer" [class]="open()">
+  <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+  <div
+    class="drawer-side bg-base-200 min-w-[18rem]"
+    style="display: flex; justify-content: space-between; flex-direction: column"
+  >
+    <div>
+      <div class="flex items-center">
+        <button
+          type="button"
+          class="btn btn-circle m-1"
+          (click)="toggleDrawer()"
+          aria-label="Toggle sidebar"
+        >
+          <i class="bi bi-layout-sidebar"></i>
+        </button>
+        <div class="flex items-center gap-5 p-3">
+          <div class="flex items-center justify-center rounded-md bg-[#8de2d6] w-10 h-10">
+            <p class="text-2xl dark:text-white">{{ appname()?.charAt(0)?.toUpperCase() }}</p>
+          </div>
+          <div class="flex flex-col items-start">
+            <p class="text-md" data-testid="drawer-appname">{{ appname() }}</p>
+            <p class="text-xs text-gray-500">Workspace</p>
+          </div>
+        </div>
+      </div>
+      <!--DATOS USUARIO-->
+      <div class="m-4 flex items-center gap-2">
+        <i class="bi bi-person-bounding-box"></i>
+        <p class="max-w-[10rem] text-sm" data-testid="drawer-username">
+          {{ usuario() | titlecase }}
+        </p>
+      </div>
+      <div class="m-4 flex items-center gap-2">
+        <i class="bi bi-shield-lock text-gray-500"></i>
+        <p class="text-sm text-gray-500" data-testid="drawer-user-role">{{ rol() | titlecase }}</p>
+      </div>
+      <!--aca contenido-->
+      <ng-content></ng-content>
+      <ul class="menu bg-base-200">
+        <li>
+          <details>
+            <summary class="w-[16rem]">
+              <i class="bi bi-bookmarks"></i>
+              <p>Bookmarks</p>
+            </summary>
+            <ul>
+              <li>
+                <span class="flex gap-3" (click)="addBookmark()">
+                  <i class="bi bi-bookmark-plus"></i>
+                  <p>Bookmark this tab</p>
+                </span>
+                @for (item of bookmarks(); track $index) {
+                <span class="flex justify-between" [routerLink]="item">
+                  <i
+                    (click)="removeBookmark(item, $event)"
+                    class="bi-dash-circle-dotted hover:bg-base-200 cursor-pointer rounded-full px-1"
+                    data-testid="drawer-remove-bookmark"
+                  ></i>
+                  <p>{{ item }}</p>
+                </span>
+                }
+              </li>
+            </ul>
+          </details>
+        </li>
+      </ul>
+    </div>
+    <div class="mb-1 flex w-full items-center justify-between gap-2">
+      <button
+        data-testid="drawer-logout-btn"
+        type="button"
+        class="btn m-1 rounded-lg"
+        (click)="logout()()"
+        aria-label="Logout"
+      >
+        <i class="bi bi-box-arrow-right text-xl"></i>
+        Salir
+      </button>
+      <!--evito un arrastre-->
+      @if (open()) {
+      <div class="px-2">
+        <label class="toggle text-base-content" data-testid="drawer-theme-toggle-label">
+          <input
+            type="checkbox"
+            [(ngModel)]="themeCheck"
+            (change)="changeTheme()"
+            data-testid="drawer-theme-toggle"
+          />
+          <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <g
+              stroke-linejoin="round"
+              stroke-linecap="round"
+              stroke-width="2"
+              fill="none"
+              stroke="currentColor"
+            >
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2"></path>
+              <path d="M12 20v2"></path>
+              <path d="m4.93 4.93 1.41 1.41"></path>
+              <path d="m17.66 17.66 1.41 1.41"></path>
+              <path d="M2 12h2"></path>
+              <path d="M20 12h2"></path>
+              <path d="m6.34 17.66-1.41 1.41"></path>
+              <path d="m19.07 4.93-1.41 1.41"></path>
+            </g>
+          </svg>
+
+          <svg aria-label="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <g
+              stroke-linejoin="round"
+              stroke-linecap="round"
+              stroke-width="2"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+            </g>
+          </svg>
+        </label>
+      </div>
+      }
+    </div>
+  </div>
+</div>

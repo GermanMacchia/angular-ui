@@ -1,0 +1,75 @@
+<div
+  class="card bg-base-100 border-4 shadow-sm rounded-xl max-w-[20rem] gm-login-card_border"
+  style="min-width: 20rem"
+>
+  <ng-content></ng-content>
+  <div class="card-body flex flex-col" [formGroup]="formgroup()">
+    <!--Email-->
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend text-lg gm-login-card_input-label">
+        {{ data().input.label }}
+      </legend>
+      <label class="input gm-login-card_input">
+        <i class="bi bi-person"></i>
+        <input
+          data-testid="login-cuil-input"
+          [formControlName]="data().input.formControlName"
+          type="text"
+          [placeholder]="data().input.placeholder"
+        />
+      </label>
+    </fieldset>
+    <!--Password-->
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend text-lg gm-login-card_password-label">
+        {{ data().password.label }}
+      </legend>
+      <label class="input gm-login-card_password-input">
+        <i class="bi bi-key"></i>
+        <input
+          data-testid="login-password-input"
+          [formControlName]="data().password.formControlName"
+          type="password"
+          required
+          [placeholder]="data().password.placeholder"
+        />
+      </label>
+    </fieldset>
+    <!--Actions-->
+    <div class="mt-4 card-actions flex flex-col gap-1 w-full items-center justify-center">
+      <!--Top Action-->
+      @if(extraActionTopLabel()) {
+      <p
+        data-testid="login-forgot-password"
+        class="gm-login-card_top-action-label cursor-pointer text-xs"
+        (click)="extraActionTop() ? extraActionTop() : null"
+      >
+        {{ extraActionTopLabel() }}
+      </p>
+      }
+      <!--Form Action-->
+      <button
+        [disabled]="formgroup().invalid"
+        data-testid="login-submit-button"
+        class="btn w-full text-[#334155] mt-2 gm-login-card_submit-button"
+        (click)="action()()"
+      >
+        @if (loading()) {
+        <span data-testid="login-loading-spinner" class="loading loading-spinner"></span>
+        } @else {
+        <p class="gm-login-card_submit-button-label text-white">{{ actionLabel() }}</p>
+        }
+      </button>
+      <!--Bottom Action-->
+      @if(extraActionBottomLabel()) {
+      <p
+        data-testid="login-forgot-password"
+        class="cursor-pointer text-xs gm-login-card_bottom-action-label"
+        (click)="extraActionBottom() ? extraActionBottom() : null"
+      >
+        {{ extraActionBottomLabel() }}
+      </p>
+      }
+    </div>
+  </div>
+</div>

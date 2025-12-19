@@ -6,6 +6,7 @@
 /out-tsc
 /bazel-out
 
+LINEAMIENTOS.md
 # Node
 /node_modules
 npm-debug.log

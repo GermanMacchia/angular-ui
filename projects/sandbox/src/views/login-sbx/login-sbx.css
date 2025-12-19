@@ -1,0 +1,23 @@
+.gm-login-card_border {
+  border-color: #cab9cf;
+}
+
+.gm-login-card_submit-button {
+  background-color: #b6ede6;
+}
+
+.gm-login-card_submit-button-label {
+  color: #334155;
+}
+
+.gm-login-card_top-action-label {
+  color: #ca8eaa;
+}
+
+.gm-login-card_input-label {
+  color: #ca8eaa;
+}
+
+.gm-login-card_password-label {
+  color: #a9e0ef;
+}

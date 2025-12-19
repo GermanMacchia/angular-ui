@@ -1,0 +1,21 @@
+<div id="main-router">
+  <lib-drawer
+    [logout]="handleLogout"
+    [themes]="{ light: 'corporate', dark: 'dim' }"
+    [hideOnRoute]="true"
+    (openChange)="sidebarOpen($event)"
+    appname="Sandbox"
+    [rol]="'Guest'"
+    [usuario]="'Usuario'"
+    [toggleLanguage]="toggleLanguage"
+  >
+    <ul class="menu bg-base-200 rounded-box w-full">
+      <li [routerLink]="['/']"><a>Home</a></li>
+      <li [routerLink]="['/login']"><a>Login</a></li>
+      <div class="divider"></div>
+    </ul>
+  </lib-drawer>
+  <div id="inner-router">
+    <router-outlet></router-outlet>
+  </div>
+</div>

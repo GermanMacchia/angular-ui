@@ -6,5 +6,97 @@
   },
   "newProjectRoot": "projects",
   "projects": {
+    "ui-kit": {
+      "projectType": "library",
+      "root": "projects/ui-kit",
+      "sourceRoot": "projects/ui-kit/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ui-kit/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ui-kit/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/ui-kit/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "sandbox": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "css"
+        }
+      },
+      "root": "projects/sandbox",
+      "sourceRoot": "projects/sandbox/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "projects/sandbox/src/main.ts",
+            "tsConfig": "projects/sandbox/tsconfig.app.json",
+            "inlineStyleLanguage": "css",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/sandbox/public"
+              }
+            ],
+            "styles": ["projects/sandbox/src/styles.css"]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "sandbox:build:production"
+            },
+            "development": {
+              "buildTarget": "sandbox:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test"
+        }
+      }
+    }
   }
 }

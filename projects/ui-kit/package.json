@@ -1,0 +1,14 @@
+{
+  "name": "gmacc-ui-kit",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/core": "^21.0.0",
+    "@angular/common": "^21.0.0",
+    "tailwindcss": "^4.1.18",
+    "daisyui": "^5.5.14"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}
