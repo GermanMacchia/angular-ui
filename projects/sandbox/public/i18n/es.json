@@ -1,4 +1,8 @@
 {
   "welcomeTitle": "Bienvenido a mi Sandbox",
-  "welcomeMessage": "Esta es una demostración de nuestra UI Kit con soporte para internacionalización en tiempo real."
+  "welcomeMessage": "Esta es una demostración de nuestra UI Kit con soporte para internacionalización en tiempo real.\nLorem ipsum dolor sit amet consectetur adipisicing elit.\nQuisquam, quod.",
+  "toast": {
+    "test": "Este es un toast!",
+    "sidebar": "Ya estas viendo el sidebar!\nY viene con un navBar con breadcrumbs ¿No es genial??"
+  }
 }

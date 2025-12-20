@@ -2,6 +2,42 @@
 
 Librería de componentes premium para aplicaciones Angular. Diseñada para ofrecer una experiencia de usuario moderna y fluida.
 
+## 📦 Instalación
+
+```bash
+npm install @angular-ui/ui-kit daisyui@latest tailwindcss@latest @tailwindcss/postcss@latest postcss@latest
+```
+
+## Incluir
+
+index.html
+
+```
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
+```
+
+.postcssrc.json
+
+```
+{
+  "plugins": {
+    "@tailwindcss/postcss": {}
+  }
+}
+```
+
+src/styles.css
+
+```
+@import 'tailwindcss';
+@plugin "daisyui";
+
+@source '../node_modules/gmacc-ui-kit/**/*.{mjs,js}';
+```
+
 ## 🧩 Componentes Disponibles
 
 A continuación se detallan los componentes listos para usar:

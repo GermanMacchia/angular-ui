@@ -1,6 +1,6 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { LoginCard, LoginData } from '@ui-kit';
+import { LoginCard, LoginData, ToastService } from '@ui-kit';
 
 @Component({
   selector: 'app-login-sbx',
@@ -16,16 +16,22 @@ import { LoginCard, LoginData } from '@ui-kit';
     [inputFocusColor]="inputFocusColor"
   >
     <div class="flex items-center justify-center pt-5">
-      <img class="h-auto w-[18vw] rounded-lg" src="images/holo-graphic.jpg" alt="bird-logo" />
+      @defer(){
+      <img class="h-auto w-[18vw] rounded-lg" src="images/holo-graphic.jpg" alt="holo-graphic" />
+      }@placeholder(){
+      <div
+        class="h-[38vh] border-3 border-gray-200 w-[18vw] rounded-lg bg-gray-200 animate-pulse"
+      ></div>
+      }
     </div>
   </lib-login-card>`,
   styleUrl: './login-sbx.css',
-  encapsulation: ViewEncapsulation.None,
   host: {
     class: 'flex items-center justify-center',
   },
 })
 export class LoginSbx {
+  toastService = inject(ToastService);
   formgroup: FormGroup = new FormGroup({});
   extraTopLabel = 'Sign Up';
   inputFocusColor = '#FAFDC6';

@@ -1,23 +1,31 @@
-.gm-login-card_border {
+:host ::ng-deep .gm-login-card_border {
   border-color: #cab9cf;
 }
 
-.gm-login-card_submit-button {
-  background-color: #b6ede6;
+:host ::ng-deep .gm-login-card_submit-button {
+  background-color: #a4dfed;
 }
 
-.gm-login-card_submit-button-label {
-  color: #334155;
+:host ::ng-deep .gm-login-card_submit-button:hover {
+  background-color: #dff2f9;
 }
 
-.gm-login-card_top-action-label {
+:host ::ng-deep .gm-login-card_submit-button-label {
+  color: #000000;
+}
+
+:host ::ng-deep .gm-login-card_top-action-label {
   color: #ca8eaa;
 }
 
-.gm-login-card_input-label {
+:host ::ng-deep .gm-login-card-bottom-action-label {
+  color: #fbfdcb;
+}
+
+:host ::ng-deep .gm-login-card_input-label {
   color: #ca8eaa;
 }
 
-.gm-login-card_password-label {
+:host ::ng-deep .gm-login-card_password-label {
   color: #a9e0ef;
 }

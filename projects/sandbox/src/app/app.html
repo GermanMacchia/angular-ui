@@ -9,13 +9,29 @@
     [usuario]="'Usuario'"
     [toggleLanguage]="toggleLanguage"
   >
-    <ul class="menu bg-base-200 rounded-box w-full">
+    <ul class="menu bg-base-200 rounded-box w-56">
       <li [routerLink]="['/']"><a>Home</a></li>
-      <li [routerLink]="['/login']"><a>Login</a></li>
-      <div class="divider"></div>
+      <li>
+        <a class="pointer-events-none">Components</a>
+        <ul>
+          <li (click)="sidebarInfo()"><a>Sidebar</a></li>
+          <li [routerLink]="['/login']"><a>Login</a></li>
+          <li (click)="callAToast()"><a>Toast</a></li>
+          <!-- <li>
+            <a>Parent</a>
+            <ul>
+              <li><a>Submenu 1</a></li>
+              <li><a>Submenu 2</a></li>
+            </ul>
+          </li> -->
+        </ul>
+      </li>
+      <!-- <li><a>Item 3</a></li> -->
     </ul>
+    <div class="divider"></div>
   </lib-drawer>
   <div id="inner-router">
     <router-outlet></router-outlet>
   </div>
 </div>
+<lib-toast></lib-toast>
