@@ -1,0 +1,37 @@
+<div class="carousel carousel-container w-full">
+  @for(img of images(); let idx = $index;let first = $first; let last = $last; track $index){
+  <div [id]="`slide${hash}-${idx}`" class="carousel-item relative w-full">
+    <img [src]="img.src" class="w-full" />
+    <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+      <button
+        type="button"
+        (click)="goToSlide(first ? images().length - 1 : idx - 1)"
+        class="btn btn-circle carousel-button carousel-button--left"
+      >
+        ❮
+      </button>
+      <button
+        type="button"
+        (click)="goToSlide(last ? 0 : idx + 1)"
+        class="btn btn-circle carousel-button carousel-button--right"
+      >
+        ❯
+      </button>
+    </div>
+  </div>
+  }
+</div>
+@if(showBottomNums()){
+<div class="flex w-full justify-center gap-2 py-2">
+  @for(img of images(); let idx = $index; track $index){
+  <button
+    type="button"
+    (click)="goToSlide(idx)"
+    class="btn btn-xs"
+    [class.btn-active]="activeIndex() === idx"
+  >
+    {{ idx + 1 }}
+  </button>
+  }
+</div>
+}

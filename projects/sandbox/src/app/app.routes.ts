@@ -9,4 +9,8 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () => import('../views/login-sbx/login-sbx').then((m) => m.LoginSbx),
   },
+  {
+    path: 'carousel',
+    loadComponent: () => import('../views/carousel-sbx/carousel-sbx').then((m) => m.CarouselSbx),
+  },
 ];

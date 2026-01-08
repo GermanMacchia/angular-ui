@@ -2,7 +2,7 @@ import { TitleCasePipe } from '@angular/common';
 import { Component, inject, input, model, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/router';
-import { filter } from 'rxjs';
+import { filter, tap } from 'rxjs';
 
 export const theme_value = 'theme_value';
 type BreadCrumb = { label: string; url: string };
@@ -16,6 +16,8 @@ export class Drawer implements OnInit {
   router = inject(Router);
   activatedRoute = inject(ActivatedRoute);
 
+  language = false;
+  toggleLanguage = input<(() => void) | null>(null);
   logout = input.required<() => void>();
   usuario = input<string>();
   rol = input<string>();
@@ -34,6 +36,7 @@ export class Drawer implements OnInit {
   paths = signal<{ label: string; url: string }[]>([]);
   hideOnRoute = input(false);
   bookmarks = signal<string[]>([]);
+  isHome = signal(true);
 
   open = model<string>('drawer-open');
   toggleDrawer = () => this.open.update((open) => (open ? '' : 'drawer-open'));
@@ -49,43 +52,6 @@ export class Drawer implements OnInit {
     const items = this.paths();
     items.pop();
     this.router.navigate([items.pop()?.url]);
-  };
-
-  addBookmark = () => {
-    const url = this.router.url;
-
-    if (url === '/') return;
-
-    const bookmarks = localStorage.getItem('bookmarks');
-    const key: string = `${this.usuario()}.${this.rol()}`;
-
-    if (!bookmarks) {
-      const data: Record<string, Array<string>> = { [key]: [url] };
-      localStorage.setItem('bookmarks', JSON.stringify(data));
-      this.setBookmarks();
-      return;
-    }
-
-    const data: Record<string, Array<string>> = JSON.parse(bookmarks);
-    data[key] = [...data?.[key], url];
-
-    localStorage.setItem('bookmarks', JSON.stringify(data));
-    this.setBookmarks();
-  };
-
-  removeBookmark = (url: string, event: any) => {
-    event.stopPropagation();
-
-    const bookmarks = localStorage.getItem('bookmarks');
-    const key: string = `${this.usuario()}.${this.rol()}`;
-
-    if (!bookmarks) return;
-
-    const data: Record<string, Array<string>> = JSON.parse(bookmarks);
-    data[key] = data[key]?.filter((ele) => ele !== url);
-
-    localStorage.setItem('bookmarks', JSON.stringify(data));
-    this.setBookmarks();
   };
 
   changeTheme = () => {
@@ -115,19 +81,64 @@ export class Drawer implements OnInit {
     if (!bookmarks) return;
     const data: Record<string, Array<string>> = JSON.parse(bookmarks);
     const userBookmarks: string[] = data[key];
+
     this.bookmarks.set(userBookmarks);
   }
 
+  addBookmark = () => {
+    const url = this.router.url;
+
+    if (url === '/') return;
+
+    const bookmarks = localStorage.getItem('bookmarks');
+    const key: string = `${this.usuario()}.${this.rol()}`;
+
+    if (!bookmarks) {
+      const data: Record<string, Array<string>> = { [key]: [url] };
+      localStorage.setItem('bookmarks', JSON.stringify(data));
+      this.setBookmarks();
+      return;
+    }
+
+    const data: Record<string, Array<string>> = JSON.parse(bookmarks);
+    const bookmarked = data[key].filter((ele) => ele === url).length;
+
+    if (!bookmarked) {
+      data[key] = [...data?.[key], url];
+    }
+
+    localStorage.setItem('bookmarks', JSON.stringify(data));
+    this.setBookmarks();
+  };
+
+  removeBookmark = (url: string, event: any) => {
+    event.stopPropagation();
+
+    const bookmarks = localStorage.getItem('bookmarks');
+    const key: string = `${this.usuario()}.${this.rol()}`;
+
+    if (!bookmarks) return;
+
+    const data: Record<string, Array<string>> = JSON.parse(bookmarks);
+    data[key] = data[key]?.filter((ele) => ele !== url);
+
+    localStorage.setItem('bookmarks', JSON.stringify(data));
+    this.setBookmarks();
+  };
+
   private subscribePaths() {
     this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        tap(() => (this.router.url == '/' ? this.isHome.set(true) : this.isHome.set(false)))
+      )
       .subscribe(() => this.buildBreadCrumb(this.activatedRoute.root));
   }
 
   private buildBreadCrumb(
     activatedRoute: ActivatedRoute,
     url: string = '',
-    breadcumbs: BreadCrumb[] = [{ label: 'Inicio', url: '' }]
+    breadcumbs: BreadCrumb[] = [{ label: 'Home', url: '' }]
   ): void {
     for (let idx = 0; idx < activatedRoute.children.length; idx++) {
       const snapshot = activatedRoute.children[idx].snapshot;

@@ -62,7 +62,7 @@
     class="drawer-side bg-base-200 min-w-[18rem]"
     style="display: flex; justify-content: space-between; flex-direction: column"
   >
-    <div>
+    <div class="mb-[3.75rem]">
       <div class="flex items-center">
         <button
           type="button"
@@ -95,6 +95,7 @@
       </div>
       <!--aca contenido-->
       <ng-content></ng-content>
+      <!--bookmarks-->
       <ul class="menu bg-base-200">
         <li>
           <details>
@@ -104,7 +105,11 @@
             </summary>
             <ul>
               <li>
-                <span class="flex gap-3" (click)="addBookmark()">
+                <span
+                  class="flex gap-3"
+                  (click)="addBookmark()"
+                  [class.pointer-events-none]="isHome()"
+                >
                   <i class="bi bi-bookmark-plus"></i>
                   <p>Bookmark this tab</p>
                 </span>
@@ -124,61 +129,77 @@
         </li>
       </ul>
     </div>
-    <div class="mb-1 flex w-full items-center justify-between gap-2">
-      <button
-        data-testid="drawer-logout-btn"
-        type="button"
-        class="btn m-1 rounded-lg"
-        (click)="logout()()"
-        aria-label="Logout"
-      >
-        <i class="bi bi-box-arrow-right text-xl"></i>
-        Salir
-      </button>
-      <!--evito un arrastre-->
-      @if (open()) {
-      <div class="px-2">
-        <label class="toggle text-base-content" data-testid="drawer-theme-toggle-label">
-          <input
-            type="checkbox"
-            [(ngModel)]="themeCheck"
-            (change)="changeTheme()"
-            data-testid="drawer-theme-toggle"
-          />
-          <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <g
-              stroke-linejoin="round"
-              stroke-linecap="round"
-              stroke-width="2"
-              fill="none"
-              stroke="currentColor"
-            >
-              <circle cx="12" cy="12" r="4"></circle>
-              <path d="M12 2v2"></path>
-              <path d="M12 20v2"></path>
-              <path d="m4.93 4.93 1.41 1.41"></path>
-              <path d="m17.66 17.66 1.41 1.41"></path>
-              <path d="M2 12h2"></path>
-              <path d="M20 12h2"></path>
-              <path d="m6.34 17.66-1.41 1.41"></path>
-              <path d="m19.07 4.93-1.41 1.41"></path>
-            </g>
-          </svg>
+    <!--evito un arrastre-->
+    @if (open()) {
+    <div class="fixed bottom-0 bg-base-200 w-[18rem] pr-3">
+      <div class="mb-1 flex w-full items-center justify-between gap-2">
+        <button
+          data-testid="drawer-logout-btn"
+          type="button"
+          class="btn m-1 rounded-lg"
+          (click)="logout()()"
+          aria-label="Logout"
+        >
+          <i class="bi bi-box-arrow-right text-xl"></i>
+          Salir
+        </button>
+        @if(toggleLanguage() !== null){
+        <div class="flex items-center gap-3">
+          <i class="bi bi-translate"></i>
+          <label class="swap">
+            <input
+              [(ngModel)]="language"
+              type="checkbox"
+              (change)="toggleLanguage() ? toggleLanguage()?.() : null"
+            />
+            <div class="swap-on">EN</div>
+            <div class="swap-off">ES</div>
+          </label>
+        </div>
+        }
+        <div class="px-2">
+          <label class="toggle text-base-content" data-testid="drawer-theme-toggle-label">
+            <input
+              type="checkbox"
+              [(ngModel)]="themeCheck"
+              (change)="changeTheme()"
+              data-testid="drawer-theme-toggle"
+            />
+            <svg aria-label="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <g
+                stroke-linejoin="round"
+                stroke-linecap="round"
+                stroke-width="2"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2"></path>
+                <path d="M12 20v2"></path>
+                <path d="m4.93 4.93 1.41 1.41"></path>
+                <path d="m17.66 17.66 1.41 1.41"></path>
+                <path d="M2 12h2"></path>
+                <path d="M20 12h2"></path>
+                <path d="m6.34 17.66-1.41 1.41"></path>
+                <path d="m19.07 4.93-1.41 1.41"></path>
+              </g>
+            </svg>
 
-          <svg aria-label="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <g
-              stroke-linejoin="round"
-              stroke-linecap="round"
-              stroke-width="2"
-              fill="none"
-              stroke="currentColor"
-            >
-              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-            </g>
-          </svg>
-        </label>
+            <svg aria-label="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <g
+                stroke-linejoin="round"
+                stroke-linecap="round"
+                stroke-width="2"
+                fill="none"
+                stroke="currentColor"
+              >
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+              </g>
+            </svg>
+          </label>
+        </div>
       </div>
-      }
     </div>
+    }
   </div>
 </div>

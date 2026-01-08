@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { TranslocoService } from '@jsverse/transloco';
 import { Drawer, Toast, ToastData, ToastService } from '@ui-kit';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -34,22 +35,30 @@ export class App {
     this.translocoService.setActiveLang(newLang);
   };
 
-  callAToast = () => {
-    const dataToast: ToastData = {
-      body: this.translocoService.translate('toast.test'),
-      severity: 'info',
-      duration: 10000,
-    };
-    this.toastService.toast(dataToast);
-  };
+  callAToast = () =>
+    this.translocoService
+      .selectTranslate('toast.test')
+      .pipe(take(1))
+      .subscribe((message: string) => {
+        const dataToast: ToastData = {
+          body: message,
+          severity: 'info',
+          duration: 10000,
+        };
+        this.toastService.toast(dataToast);
+      });
 
-  sidebarInfo = () => {
-    const dataToast: ToastData = {
-      body: this.translocoService.translate('toast.sidebar'),
-      severity: 'info',
-      icon: 'bi bi-exclamation-circle',
-      duration: 10000,
-    };
-    this.toastService.toast(dataToast);
-  };
+  sidebarInfo = () =>
+    this.translocoService
+      .selectTranslate('toast.sidebar')
+      .pipe(take(1))
+      .subscribe((message: string) => {
+        const dataToast: ToastData = {
+          body: message,
+          severity: 'info',
+          icon: 'bi bi-exclamation-circle',
+          duration: 10000,
+        };
+        this.toastService.toast(dataToast);
+      });
 }

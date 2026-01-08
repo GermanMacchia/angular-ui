@@ -17,6 +17,7 @@ export const appConfig: ApplicationConfig = {
       },
       loader: TranslocoHttpLoader,
     }),
+
     provideHttpClient(),
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
